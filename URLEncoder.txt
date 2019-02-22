@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+
+namespace URLEncoder
+{
+    class Program
+    {
+        static string urlFormatString = "https://companyserver.com/content/{0}/files/{1}/{1}Report.pdf";
+
+        public static string CreatURL { get; private set; }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("URL Encoder");
+
+            do
+            {
+                Console.Write("\nProject name: ");
+                string projectName = GetUserInput();
+                Console.Write("Activity name: ");
+                string activityName = GetUserInput();
+
+                Console.WriteLine(CreateURL(projectName, activityName));
+
+                Console.Write("Would you like to do another? (y/n): ");
+            } while (Console.ReadLine().ToLower().Equals("y"));
+        }
+
+        static string CreateURL(string projectName, string activityName)
+        {
+            return string.Format(urlFormatString, Encode(projectName), Encode(activityName));
+
+        }
+    }
+}
+
+
+    static string GetUserInput()
+    {
+
+    string input = "";
+    do
+    {
+        input = Console.ReadLine();
+        if (IsValid(input)) return input;
+        Console.Write("The input contains invalid characters. Enter again: ");
+    } while (true);
+    Console.Write("Enter again with valid characters: ");
+    if (input >= 0x00 && input <= 0x1F || input == 0x7F)
+    {
+        Console.Write("Invalid characters 0x00 - 0x7F. Enter again with valid characters: ");
+    }
+    else
+    {
+        Console.Write("Enter character input: ");
+    }
+}
+
+
+
+// get valid input from the user
+// disallow strings with control characters
+// IsValid() below is used to check if input is valid
+
+
+static bool IsValid(string input)
+{
+    foreach (char character in input.ToCharArray())
+    {
+        // check each character to see if it matches any of the not-allowed control characters
+
+        if (character >= 0x00 && character <= 0x1F || character == 0x7F)
+        {
+            // do something about the character being 0x1F
+            // 0x00 0x1F || 0x7f
+            return false;
+        }
+    }
+    return true;
+}
+
+        static string Encode(string value)
+        {
+            string encodedValue = "";
+            foreach (char character in value.ToCharArray()) {
+
+                string characterString = characterString.ToString();
+                encodedValue += characterMap.GetValueOrDefault(characterString, characterString);
+            }
+            return encodedValue;
+        }
+
+
+   
